@@ -57,7 +57,7 @@ def train():
 
     print("Building BERT model")
     bert = BERT(len(vocab), hidden=args.hidden, n_layers=args.layers, attn_heads=args.attn_heads)
-    bert.load_state_dict('/home/gamma/Workbenches/cav_nlp/bert_cav/BERT-pytorch_Harsh/uncased_L-12_H-768_A-12/bert_model.ckpt.data-00000-of-00001')
+    # bert.load_state_dict('/home/gamma/Workbenches/cav_nlp/bert_cav/BERT-pytorch_Harsh/uncased_L-12_H-768_A-12/bert_model.ckpt.data-00000-of-00001')
     print("Creating BERT Trainer")
     trainer = BERTTrainer(bert, len(vocab), train_dataloader=train_data_loader, test_dataloader=test_data_loader,
                           lr=args.lr, betas=(args.adam_beta1, args.adam_beta2), weight_decay=args.adam_weight_decay,
