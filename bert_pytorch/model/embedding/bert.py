@@ -14,7 +14,7 @@ class BERTEmbedding(nn.Module):
         sum of all these features are output of BERTEmbedding
     """
 
-    def __init__(self, vocab_size, embed_size, dropout=0.1):
+    def __init__(self, vocab_size, embed_size, dropout=0.0):
         """
         :param vocab_size: total vocab size
         :param embed_size: embedding size of token embedding
