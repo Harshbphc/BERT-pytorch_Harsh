@@ -5,6 +5,7 @@ from torch.utils.data import DataLoader
 from .model import BERT
 from .trainer import BERTTrainer
 from .dataset import BERTDataset, WordVocab
+import torch
 
 
 def train():
@@ -66,6 +67,6 @@ def train():
     for epoch in range(args.epochs):
         trainer.train(epoch)
         trainer.save(epoch, args.output_path)
-
+        torch.save(bert.state_dict(),'bertpretrain.pt')
         if test_data_loader is not None:
             trainer.test(epoch)
