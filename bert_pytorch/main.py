@@ -4,8 +4,8 @@ from torch.utils.data import DataLoader
 
 from .model import BERT
 ## remember to change .trainer file if u want to switch datasets by control clicking below
-from .trainer import BERTTrainer, BERTTrainer2
-from .dataset import BERTDataset, WordVocab, BERTDataset2
+from trainer import BERTTrainer, BERTTrainer2
+from dataset import BERTDataset, WordVocab, BERTDataset2
 import torch
 
 
@@ -40,7 +40,7 @@ def train():
 
     args = parser.parse_args()
 
-    print("Loading Vocab", args.vocab_path)
+    print("Loading Vocab", args.vocab_path) 
     vocab = WordVocab.load_vocab(args.vocab_path)
     print("Vocab Size: ", len(vocab))
 
