@@ -66,7 +66,7 @@ def train():
     print("Training Start")
     for epoch in range(args.epochs):
         trainer.train(epoch)
-        trainer.save(epoch, args.output_path)
+        trainer.save(epoch, '/home/gamma/Workbenches/cav_nlp/bert_cav/BERT-pytorch_Harsh/output')
         torch.save(bert.state_dict(),'bertpretrain.pt')
         if test_data_loader is not None:
             trainer.test(epoch)
