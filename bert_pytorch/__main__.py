@@ -2,7 +2,7 @@ import argparse
 
 from torch.utils.data import DataLoader
 
-from .model import BERT
+from bert_pytorch.model import BERT
 ## remember to change .trainer file if u want to switch datasets by control clicking below
 from .trainer import BERTTrainer, BERTTrainer2
 from .dataset import BERTDataset, WordVocab, BERTDataset2
