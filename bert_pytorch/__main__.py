@@ -32,7 +32,7 @@ def train():
     parser.add_argument("--on_memory", type=bool, default=True, help="Loading on memory: true or false")
 
     parser.add_argument("--lr", type=float, default=1e-3, help="learning rate of adam")
-    parser.add_argument("--adam_weight_decay", type=float, default=0.01, help="weight_decay of adam")
+    parser.add_argument("--adam_weight_decay", type=float, default=0.00, help="weight_decay of adam")
     parser.add_argument("--adam_beta1", type=float, default=0.9, help="adam first beta value")
     parser.add_argument("--adam_beta2", type=float, default=0.999, help="adam first beta value")
 
@@ -67,6 +67,6 @@ def train():
     for epoch in range(args.epochs):
         trainer.train(epoch)
         trainer.save(epoch, '/home/gamma/Workbenches/cav_nlp/bert_cav/BERT-pytorch_Harsh/output')
-        torch.save(bert.state_dict(),'bertpretrain.pt')
+        torch.save(bert.state_dict(),'bertpretrain_decay0.pt')
         if test_data_loader is not None:
             trainer.test(epoch)
