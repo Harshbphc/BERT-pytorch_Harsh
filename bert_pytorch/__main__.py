@@ -3,6 +3,7 @@ import argparse
 from torch.utils.data import DataLoader
 
 from .model import BERT
+## remember to change .trainer file if u want to switch datasets by control clicking below
 from .trainer import BERTTrainer
 from .dataset import BERTDataset, WordVocab, BERTDataset2
 import torch
@@ -43,11 +44,11 @@ def train():
     print("Vocab Size: ", len(vocab))
 
     print("Loading Train Dataset", args.train_dataset)
-    train_dataset = BERTDataset(args.train_dataset, vocab, seq_len=args.seq_len,
+    train_dataset = BERTDataset2(args.train_dataset, vocab, seq_len=args.seq_len,
                                 corpus_lines=args.corpus_lines, on_memory=args.on_memory)
 
     print("Loading Test Dataset", args.test_dataset)
-    test_dataset = BERTDataset(args.test_dataset, vocab, seq_len=args.seq_len, on_memory=args.on_memory) \
+    test_dataset = BERTDataset2(args.test_dataset, vocab, seq_len=args.seq_len, on_memory=args.on_memory) \
         if args.test_dataset is not None else None
 
     print("Creating Dataloader")
