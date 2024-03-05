@@ -4,7 +4,7 @@ from torch.utils.data import DataLoader
 
 from .model import BERT
 ## remember to change .trainer file if u want to switch datasets by control clicking below
-from .trainer import BERTTrainer
+from .trainer import BERTTrainer, BERTTrainer2
 from .dataset import BERTDataset, WordVocab, BERTDataset2
 import torch
 
@@ -36,6 +36,7 @@ def train():
     parser.add_argument("--adam_weight_decay", type=float, default=0.00, help="weight_decay of adam")
     parser.add_argument("--adam_beta1", type=float, default=0.9, help="adam first beta value")
     parser.add_argument("--adam_beta2", type=float, default=0.999, help="adam first beta value")
+    parser.add_argument("--dual", type=bool, default=False, help="Dual Mask true or false")
 
     args = parser.parse_args()
 
@@ -44,12 +45,20 @@ def train():
     print("Vocab Size: ", len(vocab))
 
     print("Loading Train Dataset", args.train_dataset)
-    train_dataset = BERTDataset2(args.train_dataset, vocab, seq_len=args.seq_len,
-                                corpus_lines=args.corpus_lines, on_memory=args.on_memory)
+    if args.dual == True:
+        train_dataset = BERTDataset2(args.train_dataset, vocab, seq_len=args.seq_len,
+                                    corpus_lines=args.corpus_lines, on_memory=args.on_memory)
 
-    print("Loading Test Dataset", args.test_dataset)
-    test_dataset = BERTDataset2(args.test_dataset, vocab, seq_len=args.seq_len, on_memory=args.on_memory) \
-        if args.test_dataset is not None else None
+        print("Loading Test Dataset", args.test_dataset)
+        test_dataset = BERTDataset2(args.test_dataset, vocab, seq_len=args.seq_len, on_memory=args.on_memory) \
+            if args.test_dataset is not None else None
+    else:
+        train_dataset = BERTDataset(args.train_dataset, vocab, seq_len=args.seq_len,
+                                    corpus_lines=args.corpus_lines, on_memory=args.on_memory)
+
+        print("Loading Test Dataset", args.test_dataset)
+        test_dataset = BERTDataset(args.test_dataset, vocab, seq_len=args.seq_len, on_memory=args.on_memory) \
+            if args.test_dataset is not None else None
 
     print("Creating Dataloader")
     train_data_loader = DataLoader(train_dataset, batch_size=args.batch_size, num_workers=args.num_workers)
@@ -60,9 +69,14 @@ def train():
     bert = BERT(len(vocab), hidden=args.hidden, n_layers=args.layers, attn_heads=args.attn_heads)
     # bert.load_state_dict('/home/gamma/Workbenches/cav_nlp/bert_cav/BERT-pytorch_Harsh/uncased_L-12_H-768_A-12/bert_model.ckpt.data-00000-of-00001')
     print("Creating BERT Trainer")
-    trainer = BERTTrainer(bert, len(vocab), train_dataloader=train_data_loader, test_dataloader=test_data_loader,
-                          lr=args.lr, betas=(args.adam_beta1, args.adam_beta2), weight_decay=args.adam_weight_decay,
-                          with_cuda=args.with_cuda, cuda_devices=args.cuda_devices, log_freq=args.log_freq)
+    if args.dual == True:
+        trainer = BERTTrainer2(bert, len(vocab), train_dataloader=train_data_loader, test_dataloader=test_data_loader,
+                            lr=args.lr, betas=(args.adam_beta1, args.adam_beta2), weight_decay=args.adam_weight_decay,
+                            with_cuda=args.with_cuda, cuda_devices=args.cuda_devices, log_freq=args.log_freq)
+    else:
+        trainer = BERTTrainer(bert, len(vocab), train_dataloader=train_data_loader, test_dataloader=test_data_loader,
+                            lr=args.lr, betas=(args.adam_beta1, args.adam_beta2), weight_decay=args.adam_weight_decay,
+                            with_cuda=args.with_cuda, cuda_devices=args.cuda_devices, log_freq=args.log_freq)
 
     print("Training Start")
     for epoch in range(args.epochs):
