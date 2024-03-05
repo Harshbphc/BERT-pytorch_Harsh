@@ -4,7 +4,7 @@ from torch.utils.data import DataLoader
 
 from .model import BERT
 from .trainer import BERTTrainer
-from .dataset import BERTDataset, WordVocab
+from .dataset import BERTDataset, WordVocab, BERTDataset2
 import torch
 
 
